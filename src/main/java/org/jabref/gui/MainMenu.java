@@ -17,6 +17,7 @@ import org.jabref.gui.cleanup.CleanupAction;
 import org.jabref.gui.copyfiles.CopyFilesAction;
 import org.jabref.gui.documentviewer.ShowDocumentViewerAction;
 import org.jabref.gui.duplicationFinder.DuplicateSearch;
+import org.jabref.gui.actions.CalculatePages;
 import org.jabref.gui.edit.CopyMoreAction;
 import org.jabref.gui.edit.EditAction;
 import org.jabref.gui.edit.ManageKeywordsAction;
@@ -265,6 +266,8 @@ public class MainMenu extends MenuBar {
         pushToApplicationCommand.registerReconfigurable(pushToApplicationMenuItem);
 
         tools.getItems().addAll(
+                factory.createMenuItem(StandardActions.CALCULATE_PAGE_TOTAL, new CalculatePages(frame::getCurrentLibraryTab, dialogService, stateManager, preferencesService, entryTypesManager, taskExecutor)),
+                new SeparatorMenuItem(),
                 factory.createMenuItem(StandardActions.PARSE_LATEX, new ParseLatexAction(stateManager)),
                 factory.createMenuItem(StandardActions.NEW_SUB_LIBRARY_FROM_AUX, new NewSubLibraryAction(frame, stateManager, dialogService)),
 

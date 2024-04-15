@@ -95,6 +95,7 @@ import org.controlsfx.control.action.Action;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.jabref.model.entry.User;
 /**
  * Represents the ui area where the notifier pane, the library table and the entry editor are shown.
  */
@@ -654,7 +655,10 @@ public class LibraryTab extends Tab {
     public void selectNextEntry() {
         mainTable.getSelectionModel().clearAndSelect(mainTable.getSelectionModel().getSelectedIndex() + 1);
     }
-
+    public void selectLastEntry() {
+        mainTable.getSelectionModel().clearSelection();
+        mainTable.getSelectionModel().selectLast();
+    }
     /**
      * This method is called from an EntryEditor when it should be closed. We relay to the selection listener, which takes care of the rest.
      */

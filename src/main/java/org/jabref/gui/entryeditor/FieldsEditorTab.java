@@ -41,6 +41,7 @@ import org.jabref.model.entry.field.Field;
 import org.jabref.preferences.PreferencesService;
 
 import com.tobiasdiez.easybind.EasyBind;
+import java.io.*;
 
 /**
  * A single tab displayed in the EntryEditor holding several FieldEditors.

@@ -33,6 +33,7 @@ import org.jabref.model.entry.event.EntriesEventSource;
 import org.jabref.model.entry.event.FieldAddedOrRemovedEvent;
 import org.jabref.model.entry.event.FieldChangedEvent;
 import org.jabref.model.entry.field.Field;
+import org.jabref.model.entry.User;
 import org.jabref.model.entry.field.InternalField;
 import org.jabref.model.entry.field.OrFields;
 import org.jabref.model.entry.field.StandardField;
@@ -50,7 +51,8 @@ import com.tobiasdiez.easybind.EasyBind;
 import com.tobiasdiez.easybind.optional.OptionalBinding;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 /**
  * Represents a Bib(La)TeX entry, which can be BibTeX or BibLaTeX.
  * <p>
@@ -124,6 +126,9 @@ public class BibEntry implements Cloneable {
      * The part before the start of the entry
      */
     private String commentsBeforeEntry = "";
+    private String summary = "";
+
+    private ArrayList<User> users = new ArrayList<>();
 
     /**
      * Stores the text "rendering" of the entry as read by the BibTeX reader. Includes comments.
@@ -589,7 +594,6 @@ public class BibEntry implements Cloneable {
      */
     public void setField(Map<Field, String> fields) {
         Objects.requireNonNull(fields, "fields must not be null");
-
         fields.forEach(this::setField);
     }
 
@@ -694,6 +698,8 @@ public class BibEntry implements Cloneable {
         BibEntry clone = new BibEntry(type.getValue());
         clone.fields = FXCollections.observableMap(new ConcurrentHashMap<>(fields));
         clone.commentsBeforeEntry = commentsBeforeEntry;
+        clone.summary = summary;
+        clone.users = users;
         clone.parsedSerialization = parsedSerialization;
         clone.changed = changed;
         return clone;
@@ -767,6 +773,9 @@ public class BibEntry implements Cloneable {
     public void setCommentsBeforeEntry(String parsedComments) {
         this.commentsBeforeEntry = parsedComments;
     }
+//    public void setUserSummary(String summary) {
+//        this.summary = summary;
+//    }
 
     public boolean hasChanged() {
         return changed;
@@ -899,6 +908,31 @@ public class BibEntry implements Cloneable {
         return this;
     }
 
+    public void setPageTotal(){
+        this.setField(StandardField.PAGETOTAL, calculateTotalPage());
+    }
+    public String calculateTotalPage(){
+        String returnVal = "";
+        ArrayList<Integer> numbers = new ArrayList<Integer>();
+        int totalPage = 0;
+        String Pages = "";
+        if(this.getField(StandardField.PAGES).isPresent()){
+            Pages = String.valueOf(this.getField(StandardField.PAGES));
+            Pattern pattern = Pattern.compile("\\d+");
+            Matcher matcher = pattern.matcher(Pages);
+            while (matcher.find()) {
+                numbers.add(Integer.parseInt(matcher.group()));
+            }
+            if(numbers.size()==4){
+                totalPage = numbers.get(3)-numbers.get(1);
+                return Integer.toString(totalPage);
+            } else if(numbers.size()==2){
+                totalPage = numbers.get(1)-numbers.get(0);
+                return Integer.toString(totalPage);
+            }
+        }
+        return returnVal;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -910,7 +944,8 @@ public class BibEntry implements Cloneable {
         BibEntry entry = (BibEntry) o;
         return Objects.equals(type.getValue(), entry.type.getValue())
                 && Objects.equals(fields, entry.fields)
-                && Objects.equals(commentsBeforeEntry, entry.commentsBeforeEntry);
+                && Objects.equals(commentsBeforeEntry, entry.commentsBeforeEntry)
+                && Objects.equals(summary, entry.summary);
     }
 
     /**
@@ -976,11 +1011,21 @@ public class BibEntry implements Cloneable {
         return commentsBeforeEntry;
     }
 
+    public ArrayList<User> getUsers() {
+        return this.users;
+    }
+
     public BibEntry withUserComments(String commentsBeforeEntry) {
         this.commentsBeforeEntry = commentsBeforeEntry;
         this.setChanged(false);
         return this;
     }
+    public BibEntry withUserSummary(String summary) {
+        this.summary = summary;
+        this.setChanged(false);
+        return this;
+    }
+
 
     public List<ParsedEntryLink> getEntryLinkList(Field field, BibDatabase database) {
         return getField(field).map(fieldValue -> EntryLinkList.parse(fieldValue, database))

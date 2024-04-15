@@ -2,6 +2,10 @@
 parent: Decision Records
 nav_order: 1
 ---
+### doing some test things by Sandeep Sthapit, see how it goes
+### how does this logger work? Does it work well? I do not know
+
+
 # Use Crowdin for translations
 
 ## Context and Problem Statement

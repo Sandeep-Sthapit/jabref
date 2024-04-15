@@ -246,6 +246,11 @@ public class EntryEditor extends BorderPane {
         libraryTab.selectNextEntry();
     }
 
+    @FXML
+    private void navigateToLastEntry() {
+        libraryTab.selectLastEntry();
+    }
+
     private List<EntryEditorTab> createTabs() {
         entryEditorTabs.add(new PreviewTab(databaseContext, dialogService, preferencesService, stateManager, themeManager, libraryTab.getIndexingTaskManager(), taskExecutor));
 
@@ -258,6 +263,7 @@ public class EntryEditor extends BorderPane {
 
         // Comment Tab: Tab for general and user-specific comments
         entryEditorTabs.add(new CommentsTab(preferencesService, databaseContext, libraryTab.getSuggestionProviders(), undoManager, dialogService, stateManager, themeManager, libraryTab.getIndexingTaskManager(), taskExecutor, journalAbbreviationRepository));
+        entryEditorTabs.add(new UserTab(preferencesService, databaseContext, libraryTab.getSuggestionProviders(), undoManager, dialogService, stateManager, themeManager, libraryTab.getIndexingTaskManager(), taskExecutor, journalAbbreviationRepository));
 
         // The preferences allow to configure tabs to show (e.g.,"General", "Abstract")
         // These should be shown. Already hard-coded ones should be removed.
@@ -269,6 +275,7 @@ public class EntryEditor extends BorderPane {
         entryEditorTabList.remove(DeprecatedFieldsTab.NAME);
         entryEditorTabList.remove(OtherFieldsTab.NAME);
         entryEditorTabList.remove(CommentsTab.NAME);
+        entryEditorTabList.remove(UserTab.NAME);
         entryEditorTabList.remove(MathSciNetTab.NAME);
         entryEditorTabList.remove(FileAnnotationTab.NAME);
         entryEditorTabList.remove(SciteTab.NAME);

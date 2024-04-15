@@ -36,7 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.parallel.ExecutionMode.CONCURRENT;
-
+import java.io.*;
 @Execution(CONCURRENT)
 class BibEntryTest {
     private BibEntry entry = new BibEntry();
@@ -656,6 +656,18 @@ class BibEntryTest {
     void settingTitleFieldsLeadsToChangeFlagged() {
         entry.setField(StandardField.AUTHOR, "value");
         assertTrue(entry.hasChanged());
+    }
+
+    @Test
+    void getTotalPageNumbers() {
+        BibEntry expected = new BibEntry()
+                .withField(StandardField.PAGES, "45--80");
+        BibEntry copyEntry = (BibEntry) entry.clone();
+        copyEntry.setField(StandardField.PAGES, "45--80");
+        System.out.println("------------------------------");
+        System.out.println(expected.calculateTotalPage());
+        assertTrue(copyEntry.hasChanged());
+        assertEquals(expected.getFields(), copyEntry.getFields());
     }
 
     @Test

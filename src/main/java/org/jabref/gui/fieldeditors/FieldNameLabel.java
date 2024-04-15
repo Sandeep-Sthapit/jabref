@@ -222,6 +222,8 @@ public class FieldNameLabel extends Label {
                     return Localization.lang("Owner/creator of this entry.");
                 case TIMESTAMP:
                     return Localization.lang("Timestamp of this entry, when it has been created or last modified.");
+                case USERSUMMARY:
+                    return "Summary of this entry.";
             }
         } else if (field instanceof InternalField internalField) {
             switch (internalField) {

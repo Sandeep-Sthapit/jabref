@@ -354,7 +354,9 @@ public class IconTheme {
         REMOVE_TAGS(MaterialDesignC.CLOSE),
         ACCEPT_LEFT(MaterialDesignS.SUBDIRECTORY_ARROW_LEFT),
         ACCEPT_RIGHT(MaterialDesignS.SUBDIRECTORY_ARROW_RIGHT),
-        MERGE_GROUPS(MaterialDesignS.SOURCE_MERGE);
+        MERGE_GROUPS(MaterialDesignS.SOURCE_MERGE),
+        USER_SUMMARY(MaterialDesignP.PAGE_NEXT_OUTLINE),
+        GO_LAST_PAGE(MaterialDesignP.PACKAGE_DOWN);
         private final JabRefIcon icon;
 
         JabRefIcons(Ikon... icons) {
